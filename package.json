@@ -1,0 +1,16 @@
+{
+  "name": "avatar.lws.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "generate": "node generate.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "canvas": "^2.6.1",
+    "node-fetch": "^2.6.1"
+  }
+}
