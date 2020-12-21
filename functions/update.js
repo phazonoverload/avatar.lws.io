@@ -9,13 +9,16 @@ const twitter = new Twitter({
 
 exports.handler = async event => {
   try {
-    let gradients = await fetch('https://gitcdn.link/repo/ghosh/uiGradients/master/gradients.json').then(r => r.json())
-    let gradient = gradients[Math.floor(Math.random() * gradients.length)].name.toLowerCase().split(' ').join('-').split('&').join('-').split("'").join('')
+    if(event.queryStringParameters.key == process.env.KEY) {
+        let gradients = await fetch('https://gitcdn.link/repo/ghosh/uiGradients/master/gradients.json').then(r => r.json())
+        let gradient = gradients[Math.floor(Math.random() * gradients.length)].name.toLowerCase().split(' ').join('-').split('&').join('-').split("'").join('')
 
-    const url = `${process.env.URL}/avatars/${gradient}.png`;
-    const b64 = await fetch(url).then(r => r.buffer()).then(buf => buf.toString('base64'));
-    twitter.post("account/update_profile_image", { image: b64 })
-    return res({ message: 'ok' })
+        const url = `${process.env.URL}/avatars/${gradient}.png`;
+        const b64 = await fetch(url).then(r => r.buffer()).then(buf => buf.toString('base64'));
+        twitter.post("account/update_profile_image", { image: b64 })
+        return res({ message: 'ok' })
+    }
+        return res({ message: 'invalid key' }, 401)
   } catch (error) {
     return res({ error }, 500)
   }
