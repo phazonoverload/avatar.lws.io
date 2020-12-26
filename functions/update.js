@@ -16,7 +16,7 @@ exports.handler = async event => {
         const url = `${process.env.URL}/avatars/${gradient}.png`;
         const b64 = await fetch(url).then(r => r.buffer()).then(buf => buf.toString('base64'));
         twitter.post("account/update_profile_image", { image: b64 })
-        return res({ message: 'ok' })
+        return res({ message: `Gradient changed to ${gradient}` })
     }
         return res({ message: 'invalid key' }, 401)
   } catch (error) {
