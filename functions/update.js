@@ -9,6 +9,7 @@ const twitter = new Twitter({
 
 exports.handler = async event => {
   try {
+    if (event.httpMethod == 'OPTIONS') return res({ error }, 204, {'Allow': 'POST'})
     if(event.queryStringParameters.key == process.env.KEY) {
         let gradients = await fetch('https://gitcdn.link/repo/ghosh/uiGradients/master/gradients.json').then(r => r.json())
         let gradient = gradients[Math.floor(Math.random() * gradients.length)].name.toLowerCase().split(' ').join('-').split('&').join('-').split("'").join('')
@@ -24,6 +25,10 @@ exports.handler = async event => {
   }
 }
 
-function res(o, statusCode = 200) {
-  return { statusCode, body: JSON.stringify(o) }
+function res(o, statusCode = 200, extraHeaders) {
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type'
+  }
+  return { statusCode, headers: { ...headers, ...extraHeaders }, body: JSON.stringify(o) }
 }
